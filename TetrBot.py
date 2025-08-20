@@ -74,6 +74,40 @@ def detect_new(current: list[list[int]], board_size: list[int], mino_table: list
     return -1
 
 
+def find_column_top(board: list[list[int]], board_size: list[int]) -> list[int]:
+    rlt = []
+    for column in range(board_size[0]):
+        unfound = True
+        for y in range(board_size[1]):
+            if board[y][column]:
+                unfound = False
+                rlt.append(board_size[1] - y)
+                break
+        
+        if unfound:  rlt.append(0)
+
+    return rlt
+
+
+
+def fit_location(board_column_top: list[int], mino_bottom: list[int]) -> tuple[int, int]:
+    rlt_height = -1
+    rlt = -1
+    for x in range(len(board_column_top) - len(mino_bottom)):
+        fitable = True
+        h = board_column_top[x] - mino_bottom[0]
+        for i in range(1, len(mino_bottom)):
+            if board_column_top[x+i] - mino_bottom[i] != h:
+                fitable = False
+                break
+        
+        if fitable and (rlt_height == -1 or rlt_height > board_column_top[x]):
+            rlt = x
+            rlt_height = board_column_top[x]
+    
+    return rlt, rlt_height
+
+
 
 board_size = [10, 20]
 area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
@@ -89,6 +123,13 @@ mino_table = [[[1, 0], [0, 1], [1, 1]],
               [[1, 0], [0, 1], [-1, 1]],
               [[-1, 1], [0, 1], [1, 1]],
               [[1, 0], [1, 1], [2, 1]]]
+mino_bottom = [[[1, 1]],
+               [[1, 1, 1, 1], [1]],
+               [[1, 1, 1], [1, 3], [2, 2, 1], [1, 1]],
+               [[1, 1, 1], [1, 1], [1, 2, 2], [3, 1]],
+               [[1, 1, 2], [2, 1]],
+               [[1, 1, 1], [1, 2], [2, 1, 2], [2, 1]],
+               [[2, 1, 1], [1, 2]]]
 mino_name = ['O', 'I', 'J', 'L', 'S', 'T', 'Z']
 
 
@@ -96,18 +137,22 @@ from time import sleep
 
 
 while True:
-    area = scs.get_screen(top_size)
-    board = scan_board(convert_to_rgbsum(area, [top_size['width'], top_size['height']]), top_board_size, [top_size['width'], top_size['height']])
+    # area = scs.get_screen(top_size)
+    # board = scan_board(convert_to_rgbsum(area, [top_size['width'], top_size['height']]), top_board_size, [top_size['width'], top_size['height']])
+
+    area = scs.get_screen(area_size)
+    board = scan_board(convert_to_rgbsum(area, [area_size['width'], area_size['height']]), board_size, [area_size['width'], area_size['height']])
 
     for y in range(len(board)):
         for x in range(len(board[0])):
             print('██' if board[y][x] else '  ', end = '')
         print()
     
-    new_mino = detect_new(board, top_board_size, mino_table)
-    if new_mino > -1:
-        print(mino_name[new_mino])
+    # new_mino = detect_new(board, top_board_size, mino_table)
+    # if new_mino > -1:
+    #     print(mino_name[new_mino])
 
-    prev_board = board.copy()
+    print(find_column_top(board, board_size))
+
     print('--' * 50)
     sleep(0.5)
