@@ -182,4 +182,4 @@ while True:
     print('--' * 50)
 
     # keyboard.wait('space')
-    sleep(0.75)
+    sleep(0.05)
