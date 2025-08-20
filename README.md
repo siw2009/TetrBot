@@ -1,1 +1,0 @@
-# This is a Tetr.io bot
