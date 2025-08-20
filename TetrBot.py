@@ -91,25 +91,14 @@ def find_column_top(board: list[list[int]], board_size: list[int]) -> list[int]:
     return rlt
 
 
-def fit_location(board: list[list[int]], board_column_top: list[int], mino_width: list[list[int]], mino_bottom: list[list[int]], mino_height: list[int]) -> list[int]:
+def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino_height: list[int]) -> list[int]:
     rlt = []
     for mino in range(len(mino_bottom)):
-        for i in range(len(board_column_top) - len(mino_bottom[mino]) + 1):
+        for i in range(len(board_column_top) - len(mino_bottom[mino]) +1):
             required = max([board_column_top[i+j] - mino_bottom[mino][j] for j in range(len(mino_bottom[mino]))])
             gaps = sum([required + mino_bottom[mino][j] - board_column_top[i+j] for j in range(len(mino_bottom[mino]))])
             total_height = required + mino_height[mino]
-
-            newboard = board.copy()
-            rows = [r.count(1) for r in newboard]
-            for j in range(mino_height[mino]):
-                rows[len(board) - (required + mino_height[mino] - j)] += mino_width[mino][j]
-            
-            cnt = 0
-            for j in rows:
-                if j == len(board[0]):
-                    cnt += 1
-
-            rlt.append([i, mino, gaps * 4 + total_height - cnt])
+            rlt.append([i, mino, gaps * 4 + total_height + required])
     
     return min(rlt, key = lambda x: x[2])
 
@@ -129,7 +118,7 @@ def press(target_column: int, current_column: int, spin: int):
 
 
 board_size = [10, 20]
-area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
+area_size = {'top': 386, 'left': 1049, 'width': 464, 'height': 930}
 
 block_size = [area_size['width'] / board_size[0], area_size['height'] / board_size[1]]
 top_board_size = [10, 4]
@@ -142,13 +131,6 @@ mino_table = [[[1, 0], [0, 1], [1, 1]],
               [[1, 0], [0, 1], [-1, 1]],
               [[-1, 1], [0, 1], [1, 1]],
               [[1, 0], [1, 1], [2, 1]]]
-mino_widths = [[[2, 2]],
-               [[4], [1, 1, 1, 1]],
-               [[1, 3], [2, 1, 1], [3, 1], [1, 1, 2]],
-               [[1, 3], [1, 1, 2], [3, 1], [2, 1, 1]],
-               [[2, 2], [1, 2, 1]],
-               [[1, 3], [1, 2, 1], [3, 1], [1, 2, 1]],
-               [[2, 2], [1, 2, 1]]]
 mino_bottom = [[[0, 0]],
                [[0, 0, 0, 0], [0]],
                [[0, 0, 0], [0, 2], [1, 1, 0], [0, 0]],
@@ -205,11 +187,11 @@ while True:
             cantHold = True
             continue
 
-        action = fit_location(board, find_column_top(board, board_size), mino_widths[new_mino], mino_bottom[new_mino], mino_height[new_mino])
+        action = fit_location(find_column_top(board, board_size), mino_bottom[new_mino], mino_height[new_mino])
         # print(action)
 
         if not cantHold:
-            holdAction = fit_location(board, find_column_top(board, board_size), mino_widths[held], mino_bottom[held], mino_height[held])
+            holdAction = fit_location(find_column_top(board, board_size), mino_bottom[held], mino_height[held])
 
             if holdAction[2] < action[2]:
                 keyboard.press_and_release('shift')
