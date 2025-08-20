@@ -91,44 +91,27 @@ def find_column_top(board: list[list[int]], board_size: list[int]) -> list[int]:
     return rlt
 
 
-
-def fit_location(board_column_top: list[int], mino_bottom: list[int], mino_height: int) -> tuple[int, int]:
-    rlt_height = -1
-    rlt = -1
-    for x in range(len(board_column_top) - len(mino_bottom)):
-        fitable = True
-        h = board_column_top[x] - mino_bottom[0]
-        for i in range(1, len(mino_bottom)):
-            if board_column_top[x+i] - mino_bottom[i] != h:
-                fitable = False
-                break
-        
-        required = board_column_top[x] - mino_bottom[0] + mino_height
-
-        if fitable and (rlt_height == -1 or rlt_height >= required):
-            rlt = x
-            rlt_height = required
-            continue
-
-
-        required = max([board_column_top[x+i] - mino_bottom[i] + mino_height for i in range(len(mino_bottom))])
-        
-        if rlt_height == -1 or rlt_height > required:
-            rlt = x
-            rlt_height = required
+def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino_height: list[int]) -> list[int]:
+    rlt = []
+    for mino in range(len(mino_bottom)):
+        for i in range(len(board_column_top) - len(mino_bottom[mino]) +1):
+            required = max([board_column_top[i+j] - mino_bottom[mino][j] for j in range(len(mino_bottom[mino]))])
+            gaps = sum([required + mino_bottom[mino][j] - board_column_top[i+j] for j in range(len(mino_bottom[mino]))])
+            total_height = required + mino_height[mino]
+            rlt.append([i, mino, gaps*0.5 + total_height])
     
-    return rlt, rlt_height
+    return min(rlt, key = lambda x: x[2])[:2]
 
 
 def press(target_column: int, current_column: int, spin: int):
     for i in range(spin):
         keyboard.press_and_release('x')
-        sleep(0.01)
+        # sleep(0.01)
 
     movement = 'right'  if target_column > current_column else  'left'
     for i in range(abs(target_column - current_column)):
         keyboard.press_and_release(movement)
-        sleep(0.01)
+        # sleep(0.01)
 
 
 board_size = [10, 20]
@@ -189,13 +172,12 @@ while True:
     
     new_mino = detect_new(top_board, top_board_size, mino_table)
     if new_mino > -1:
-        print(mino_name[new_mino])
-
-        action = min([(fit_location(find_column_top(board, board_size), shape, mino_height[new_mino][i]), i) for i, shape in enumerate(mino_bottom[new_mino])], key = lambda x: x[0][1] if x[0][0]>-1 else 200)
-        print(action)
-        press(action[0][0], mino_column[new_mino][action[-1]], action[-1])
+        # print(mino_name[new_mino])
+        action = fit_location(find_column_top(board, board_size), mino_bottom[new_mino], mino_height[new_mino])
+        # print(action)
+        press(action[0], mino_column[new_mino][action[-1]], action[-1])
 
     print('--' * 50)
 
-    keyboard.wait('space')
-    sleep(0.05)
+    # keyboard.wait('space')
+    sleep(0.75)
