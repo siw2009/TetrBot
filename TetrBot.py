@@ -112,6 +112,8 @@ def press(target_column: int, current_column: int, spin: int):
     for i in range(abs(target_column - current_column)):
         keyboard.press_and_release(movement)
         # sleep(0.01)
+    
+    keyboard.press_and_release('space')
 
 
 board_size = [10, 20]
