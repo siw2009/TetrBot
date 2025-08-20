@@ -109,7 +109,7 @@ def press(target_column: int, current_column: int, spin: int):
     cantHold = False
 
     movement = 'right'  if target_column > current_column else  'left'
-    pressset = [spin_table[spin]]  if spin else  [] + [movement] * abs(target_column - current_column) + ['space']
+    pressset = ([spin_table[spin]]  if spin else  []) + [movement] * abs(target_column - current_column) + ['space']
 
     for x in pressset:
         keyboard.press_and_release(x)
