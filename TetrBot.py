@@ -117,11 +117,11 @@ def press(target_column: int, current_column: int, spin: int):
 
 
 
-board_size = [10, 20]
+board_size = [4, 20]
 area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
 
 block_size = [area_size['width'] / board_size[0], area_size['height'] / board_size[1]]
-top_board_size = [10, 4]
+top_board_size = [4, 4]
 top_size = {'top': round(area_size['top'] - block_size[1] * top_board_size[1]), 'left': area_size['left'], 'width': area_size['width'], 'height': round(block_size[1] * top_board_size[1])}
 
 mino_table = [[[1, 0], [0, 1], [1, 1]],
