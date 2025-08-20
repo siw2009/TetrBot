@@ -113,7 +113,7 @@ def press(target_column: int, current_column: int, spin: int):
 
     for x in pressset:
         keyboard.press_and_release(x)
-        sleep(0.04)
+        sleep(0.05)
     # sleep(1)
 
 
