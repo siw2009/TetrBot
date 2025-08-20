@@ -98,7 +98,7 @@ def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino
             required = max([board_column_top[i+j] - mino_bottom[mino][j] for j in range(len(mino_bottom[mino]))])
             gaps = sum([required + mino_bottom[mino][j] - board_column_top[i+j] for j in range(len(mino_bottom[mino]))])
             total_height = required + mino_height[mino]
-            rlt.append([i, mino, gaps * 4 + total_height + required])
+            rlt.append([i, mino, gaps * 2 + total_height + required])
     
     return min(rlt, key = lambda x: x[2])
 
@@ -108,11 +108,18 @@ def press(target_column: int, current_column: int, spin: int):
     cantHold = False
 
     movement = 'right'  if target_column > current_column else  'left'
-    pressset = ['x'] * spin + [movement] * abs(target_column - current_column) + ['space']
+    if spin == 1:
+        pressset = ['x'] + [movement] * abs(target_column - current_column) + ['space']
+    elif spin ==2:
+        pressset = ['a'] + [movement] * abs(target_column - current_column) + ['space']
+    elif spin == 3:
+        pressset = ['z'] + [movement] * abs(target_column - current_column) + ['space']
+    else:
+        pressset = [movement] * abs(target_column - current_column) + ['space']
 
     for x in pressset:
         keyboard.press_and_release(x)
-        sleep(0.05)
+        sleep(0.04)
     # sleep(1)
 
 
