@@ -98,12 +98,15 @@ def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino
             required = max([board_column_top[i+j] - mino_bottom[mino][j] for j in range(len(mino_bottom[mino]))])
             gaps = sum([required + mino_bottom[mino][j] - board_column_top[i+j] for j in range(len(mino_bottom[mino]))])
             total_height = required + mino_height[mino]
-            rlt.append([i, mino, gaps + total_height * 0.25])
+            rlt.append([i, mino, gaps * 4 + total_height])
     
-    return min(rlt, key = lambda x: x[2])[:2]
+    return min(rlt, key = lambda x: x[2])
 
 
 def press(target_column: int, current_column: int, spin: int):
+    global cantHold
+    cantHold = False
+
     for i in range(spin):
         keyboard.press_and_release('x')
         # sleep(0.01)
@@ -154,6 +157,9 @@ mino_column = [[4],
                [3, 4]]
 mino_name = ['O', 'I', 'J', 'L', 'S', 'T', 'Z']
 
+held = -1
+cantHold = False
+
 
 
 while True:
@@ -174,13 +180,30 @@ while True:
         print()
     
     new_mino = detect_new(top_board, top_board_size, mino_table)
+    if held == -1:
+        keyboard.press_and_release('shift')
+        held = new_mino
+        cantHold = True
+        continue
+
     if new_mino > -1:
-        # print(mino_name[new_mino])
         action = fit_location(find_column_top(board, board_size), mino_bottom[new_mino], mino_height[new_mino])
-        # print(action)
-        press(action[0], mino_column[new_mino][action[-1]], action[-1])
+        
+        if not cantHold:
+            holdAction = fit_location(find_column_top(board, board_size), mino_bottom[held], mino_height[held])
+
+            if holdAction[2] < action[2]:
+                keyboard.press_and_release('shift')
+                press(holdAction[0], mino_column[held][holdAction[1]], holdAction[1])
+
+                held = new_mino
+                cantHold = True
+            else:
+                press(action[0], mino_column[new_mino][action[1]], action[1])    
+
+        else:
+            press(action[0], mino_column[new_mino][action[1]], action[1])
 
     print('--' * 50)
 
-    # keyboard.wait('space')
-    sleep(0.025)
+    # sleep(1)
