@@ -118,7 +118,7 @@ def press(target_column: int, current_column: int, spin: int):
 
 
 board_size = [10, 20]
-area_size = {'top': 386, 'left': 1049, 'width': 464, 'height': 930}
+area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
 
 block_size = [area_size['width'] / board_size[0], area_size['height'] / board_size[1]]
 top_board_size = [10, 4]
