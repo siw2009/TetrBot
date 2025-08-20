@@ -107,18 +107,13 @@ def press(target_column: int, current_column: int, spin: int):
     global cantHold
     cantHold = False
 
-    # sleep(0.4)
-    for i in range(spin):
-        keyboard.press_and_release('x')
-        sleep(0.15)
-
     movement = 'right'  if target_column > current_column else  'left'
-    for i in range(abs(target_column - current_column)):
-        keyboard.press_and_release(movement)
-        sleep(0.15)
-    
-    sleep(1)
-    keyboard.press_and_release('space')
+    pressset = ['x'] * spin + [movement] * abs(target_column - current_column) + ['space']
+
+    for x in pressset:
+        keyboard.press_and_release(x)
+        sleep(0.05)
+    # sleep(1)
 
 
 
@@ -171,10 +166,6 @@ while True:
     area = scs.get_screen(area_size)
     board = scan_board(convert_to_rgbsum(area, [area_size['width'], area_size['height']]), board_size, [area_size['width'], area_size['height']])
 
-    # for y in range(len(top_board)):
-    #     for x in range(len(top_board[0])):
-    #         print('██' if top_board[y][x] else '  ', end = '')
-    #     print()
 
     # for y in range(len(board)):
     #     for x in range(len(board[0])):
@@ -182,13 +173,20 @@ while True:
     #     print()
     
     new_mino = detect_new(top_board, top_board_size, mino_table)
-    if held == -1:
-        keyboard.press_and_release('shift')
-        held = new_mino
-        cantHold = True
-        continue
+    
+    # if new_mino > -1:
+    #     for y in range(len(top_board)):
+    #         for x in range(len(top_board[0])):
+    #             print('██' if top_board[y][x] else '  ', end = '')
+    #         print()
 
     if new_mino > -1:
+        if held == -1:
+            keyboard.press_and_release('shift')
+            held = new_mino
+            cantHold = True
+            continue
+
         action = fit_location(find_column_top(board, board_size), mino_bottom[new_mino], mino_height[new_mino])
         # print(action)
 
