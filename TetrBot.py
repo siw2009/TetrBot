@@ -43,7 +43,7 @@ def scan_board(board_sum_rgb: list[list[int]], board_size: list[int], area_size:
             ax_start = round(block_size[0] * x)
             ax_end = min(area_size[0], round(block_size[0] * (x+1))) -1
             
-            rlt[-1].append(int(average_area(board_sum_rgb, ax_start, ax_end, ay_start, ay_end) > 100))
+            rlt[-1].append(int(average_area(board_sum_rgb, ax_start, ax_end, ay_start, ay_end) > 150))
 
     return rlt
 
@@ -182,7 +182,7 @@ while True:
 
     if new_mino > -1:
         if held == -1:
-            keyboard.press_and_release('shift')
+            keyboard.press_and_release('c')
             held = new_mino
             cantHold = True
             continue
@@ -194,7 +194,7 @@ while True:
             holdAction = fit_location(find_column_top(board, board_size), mino_bottom[held], mino_height[held])
 
             if holdAction[2] < action[2]:
-                keyboard.press_and_release('shift')
+                keyboard.press_and_release('c')
                 press(holdAction[0], mino_column[held][holdAction[1]], holdAction[1])
 
                 held = new_mino
