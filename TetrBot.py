@@ -113,8 +113,8 @@ board_size = [10, 20]
 area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
 
 block_size = [area_size['width'] / board_size[0], area_size['height'] / board_size[1]]
-top_size = {'top': round(area_size['top'] - block_size[1] * 3), 'left': area_size['left'], 'width': area_size['width'], 'height': round(block_size[1] * 3)}
-top_board_size = [10, 3]
+top_board_size = [10, 4]
+top_size = {'top': round(area_size['top'] - block_size[1] * top_board_size[1]), 'left': area_size['left'], 'width': area_size['width'], 'height': round(block_size[1] * top_board_size[1])}
 
 mino_table = [[[1, 0], [0, 1], [1, 1]],
               [[1, 0], [2, 0], [3, 0]],
@@ -133,7 +133,7 @@ mino_bottom = [[[1, 1]],
 mino_name = ['O', 'I', 'J', 'L', 'S', 'T', 'Z']
 
 
-# from time import sleep
+from time import sleep
 import keyboard
 
 
@@ -144,12 +144,17 @@ while True:
     area = scs.get_screen(area_size)
     board = scan_board(convert_to_rgbsum(area, [area_size['width'], area_size['height']]), board_size, [area_size['width'], area_size['height']])
 
+    for y in range(len(top_board)):
+        for x in range(len(top_board[0])):
+            print('██' if top_board[y][x] else '  ', end = '')
+        print()
+
     for y in range(len(board)):
         for x in range(len(board[0])):
             print('██' if board[y][x] else '  ', end = '')
         print()
     
-    new_mino = detect_new(board, top_board_size, mino_table)
+    new_mino = detect_new(top_board, top_board_size, mino_table)
     if new_mino > -1:
         print(mino_name[new_mino])
 
@@ -159,3 +164,4 @@ while True:
     print('--' * 50)
 
     keyboard.wait('space')
+    sleep(0.05)
