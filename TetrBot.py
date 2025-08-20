@@ -98,7 +98,7 @@ def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino
             required = max([board_column_top[i+j] - mino_bottom[mino][j] for j in range(len(mino_bottom[mino]))])
             gaps = sum([required + mino_bottom[mino][j] - board_column_top[i+j] for j in range(len(mino_bottom[mino]))])
             total_height = required + mino_height[mino]
-            rlt.append([i, mino, gaps*0.5 + total_height])
+            rlt.append([i, mino, gaps + total_height * 0.25])
     
     return min(rlt, key = lambda x: x[2])[:2]
 
@@ -114,6 +114,7 @@ def press(target_column: int, current_column: int, spin: int):
         # sleep(0.01)
     
     keyboard.press_and_release('space')
+
 
 
 board_size = [10, 20]
@@ -182,4 +183,4 @@ while True:
     print('--' * 50)
 
     # keyboard.wait('space')
-    sleep(0.05)
+    sleep(0.025)
