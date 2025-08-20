@@ -109,7 +109,7 @@ def fit_location(board: list[list[int]], board_column_top: list[int], mino_width
                 if j == len(board[0]):
                     cnt += 1
 
-            rlt.append([i, mino, gaps * 4 + total_height - cnt])
+            rlt.append([i, mino, gaps * 4 + total_height + required + cnt * 0.5])
     
     return min(rlt, key = lambda x: x[2])
 
