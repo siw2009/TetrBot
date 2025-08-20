@@ -103,19 +103,13 @@ def fit_location(board_column_top: list[int], mino_bottom: list[list[int]], mino
     return min(rlt, key = lambda x: x[2])
 
 
+spin_table = {1: 'x', 2: 'a', 3: 'z', 0: ''}
 def press(target_column: int, current_column: int, spin: int):
     global cantHold
     cantHold = False
 
     movement = 'right'  if target_column > current_column else  'left'
-    if spin == 1:
-        pressset = ['x'] + [movement] * abs(target_column - current_column) + ['space']
-    elif spin ==2:
-        pressset = ['a'] + [movement] * abs(target_column - current_column) + ['space']
-    elif spin == 3:
-        pressset = ['z'] + [movement] * abs(target_column - current_column) + ['space']
-    else:
-        pressset = [movement] * abs(target_column - current_column) + ['space']
+    pressset = [spin_table[spin]] + [movement] * abs(target_column - current_column) + ['space']
 
     for x in pressset:
         keyboard.press_and_release(x)
