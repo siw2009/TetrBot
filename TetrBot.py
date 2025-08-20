@@ -133,12 +133,13 @@ mino_bottom = [[[1, 1]],
 mino_name = ['O', 'I', 'J', 'L', 'S', 'T', 'Z']
 
 
-from time import sleep
+# from time import sleep
+import keyboard
 
 
 while True:
-    # area = scs.get_screen(top_size)
-    # board = scan_board(convert_to_rgbsum(area, [top_size['width'], top_size['height']]), top_board_size, [top_size['width'], top_size['height']])
+    top_area = scs.get_screen(top_size)
+    top_board = scan_board(convert_to_rgbsum(top_area, [top_size['width'], top_size['height']]), top_board_size, [top_size['width'], top_size['height']])
 
     area = scs.get_screen(area_size)
     board = scan_board(convert_to_rgbsum(area, [area_size['width'], area_size['height']]), board_size, [area_size['width'], area_size['height']])
@@ -148,11 +149,13 @@ while True:
             print('██' if board[y][x] else '  ', end = '')
         print()
     
-    # new_mino = detect_new(board, top_board_size, mino_table)
-    # if new_mino > -1:
-    #     print(mino_name[new_mino])
+    new_mino = detect_new(board, top_board_size, mino_table)
+    if new_mino > -1:
+        print(mino_name[new_mino])
 
-    print(find_column_top(board, board_size))
+    # print(find_column_top(board, board_size))
+        print(min([(fit_location(find_column_top(board, board_size), shape), i) for i, shape in enumerate(mino_bottom[new_mino])], key = lambda x: x[0][1] if x[0][1]>-1 else 200))
 
     print('--' * 50)
-    sleep(0.5)
+
+    keyboard.wait('space')
