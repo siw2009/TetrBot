@@ -34,15 +34,16 @@ def scan_board(board_sum_rgb: list[list[int]], board_size: list[int], area_size:
 
     for y in range(board_size[1]):
         ay_start = round(block_size[1] * y)
-        ay_end = min(area_size[1], round(block_size[1] * (y+1)))
+        ay_end = min(area_size[1], round(block_size[1] * (y+1))) -1
         rlt.append([])
 
         for x in range(board_size[0]):
             ax_start = round(block_size[0] * x)
-            ax_end = min(area_size[0], round(block_size[0] * (x+1)))
+            ax_end = min(area_size[0], round(block_size[0] * (x+1))) -1
             
-            rlt[-1].append(average_area(board_sum_rgb, ax_start, ax_end, ay_start, ay_end) > 10)
+            rlt[-1].append(int(average_area(board_sum_rgb, ax_start, ax_end, ay_start, ay_end) > 10))
 
+    return rlt
 
 
 board_size = [10, 20]
@@ -50,3 +51,9 @@ area_size = {'top': 298, 'left': 789, 'width': 343, 'height': 683}
 block_size = [area_size['width'] / board_size[0], area_size['height'] / board_size[1]]
 area = scs.get_screen(area_size)
 
+
+from time import sleep
+
+while True:
+    print(*scan_board(convert_to_rgbsum(area, [area_size['width'], area_size['height']]), board_size, [area_size['width'], area_size['height']]), sep = '\n')
+    sleep(1)
