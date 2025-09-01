@@ -28,6 +28,11 @@ $$\int ^{a} _{b} f \left( x \right) dx \approx \frac {b-a} {6} \left[\  f \left(
 
 이를 이진탐색과 결합하면 자연상수 $e$의 값을 근사하는 것도 가능하며, `math` 라이브러리의 값과 비교했을 때, 꽤 정확한 결과값을 내놓는다.
 
+아래는 라그랑주 보간법으로 $tan$함수를 근사한 desmos 그래프 이다.
+
+!(img)[https://www.desmos.com/calculator/0vkq0cyeun?embed]
+
+
 &nbsp;
 
 ## 자세한 내용은 [여기](https://en.wikipedia.org/wiki/Simpson%27s_rule)와 [여기](https://en.wikipedia.org/wiki/Lagrange_polynomial)를 참고하자.
