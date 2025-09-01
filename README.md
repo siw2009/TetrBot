@@ -17,6 +17,7 @@
 이 tetr.io 봇은 `라그랑주 보간법`과 `simpson’s rule`을 사용해 해법을 근사하며, `퍼펙트 클리어`와 `T spin`을 해낼 수 있는 가장 최적의 해를 `next`와 `hold`를 매개변수로 사용하여 구한다. 라그랑주 보간법은 다음과 같이 정의된다.
 
 데이터의 개수가 $l$개 있다고 하면,
+
 $$f \left( x \right) =\sum _{n=0}^{l} \, \left( y_{n} \prod _{k=0 \wedge k\neq n}^{l} \, \frac { \left( x-x_{k} \right) } {\left( x_{n}-x_{k} \right) } \right)$$
 
 정말 간단하다. 이를 python에서 구현하는 것도 2중 for 문이면 가능한 것이다. *(비싸긴 하네)*
