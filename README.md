@@ -30,7 +30,7 @@ $$\int ^{a} _{b} f \left( x \right) dx \approx \frac {b-a} {6} \left[\  f \left(
 
 아래는 라그랑주 보간법으로 $tan$함수를 근사한 desmos 그래프 이다.
 
-!(img)[https://www.desmos.com/calculator/0vkq0cyeun?embed]
+![img](https://www.desmos.com/calculator/0vkq0cyeun?embed)
 
 
 &nbsp;
